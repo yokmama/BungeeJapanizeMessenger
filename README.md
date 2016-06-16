@@ -15,13 +15,16 @@ PluginフォルダにできたBungeeJapanMessengerの下にconfig.ymlという�
 そこに以下の設定があるはずです。
 これをそれぞれ変更してください。
 
-//SlackのIncomoingWebHookのURLを設定
+SlackのIncomoingWebHookのURLを設定
+
 webhook: https://hooks.slack.com/services/
 
-//SlackのOutogingWebHookのPortを設定
+SlackのOutogingWebHookのPortを設定
+
 listen-port: 8080
 
-//SlackのOutgoingWebHookのトークンを設定
+SlackのOutgoingWebHookのトークンを設定
+
 token: <Please set the outgoing token>
 
 SlackのOutgoing,Incomingの設定は割愛します。
