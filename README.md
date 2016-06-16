@@ -9,24 +9,24 @@ BungeeJapanMessenger　に関する詳細はこちらのURLを参考にしてく
 https://github.com/ucchyocean/BungeeJapanizeMessenger
 
 
-* インストール
+# インストール
 
 PluginフォルダにできたBungeeJapanMessengerの下にconfig.ymlというファイルができています。
 そこに以下の設定があるはずです。
 これをそれぞれ変更してください。
 
-#SlackのIncomoingWebHookのURLを設定
+*SlackのIncomoingWebHookのURLを設定
 webhook: https://hooks.slack.com/services/
 
-#SlackのOutogingWebHookのPortを設定
+*SlackのOutogingWebHookのPortを設定
 listen-port: 8080
 
-#SlackのOutgoingWebHookのトークンを設定
+*SlackのOutgoingWebHookのトークンを設定
 token: <Please set the outgoing token>
 
 SlackのOutgoing,Incomingの設定は割愛します。
 
-* 使い方
+# 使い方
 
 Minecraftで喋った会話は自動的にSlackのチャンネルにいきます。
 
