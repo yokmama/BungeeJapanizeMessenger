@@ -11,8 +11,8 @@ https://github.com/ucchyocean/BungeeJapanizeMessenger
 
 # インストール
 
-本家のBungeeJapanMessengerと同じように、pluginフォルダに出来上がったBungeeJapanMessenger.jarファイルを置いて
-一旦サーバーを起動してください。そのあと一旦終了します。
+本家のBungeeJapanMessengerと同じように、pluginフォルダにBungeeJapanMessenger.jarファイルを置いて
+一旦サーバーを起動してください。そのあとサーバーを一旦終了します。
 すると、Pluginの下にBungeeJapanMessengerというフォルダが作成され、その下にconfig.ymlというファイルができています。
 
 そのファイルを開くと、以下の設定があるはずです。
