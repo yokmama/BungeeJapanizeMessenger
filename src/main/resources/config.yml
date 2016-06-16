@@ -88,3 +88,12 @@ broadcastChatLocalJapanize: true
 ngword:
 - 'ちん(こ|ぽ|ちん)'
 
+# -------------------- Slack設定 --------------------
+
+#SlackのIncomoingWebHookのURLを設定
+webhook: https://hooks.slack.com/services/
+#SlackのOutogingWebHookのPortを設定
+listen-port: 8080
+#SlackのOutgoingWebHookのトークンを設定
+token: <Please set the outgoing token>
+

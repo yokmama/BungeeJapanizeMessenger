@@ -1,10 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.ucchyocean</groupId>
   <artifactId>BungeeJapanizeMessenger</artifactId>
   <version>1.1.1</version>
   <description>Japanize Chat System for BungeeCord</description>
-
   <licenses>
     <license>
       <name>GNU Lesser General Public License version 3</name>
@@ -12,30 +12,16 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>internal.repo</id>
-      <name>Temporary Staging Repository</name>
-      <url>file://${project.build.directory}/mvn-repo</url>
-    </repository>
-  </distributionManagement>
-
   <build>
-    <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.3</version>
         <executions>
@@ -56,15 +42,8 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2.1</version>
-        <configuration>
-          <finalName>${project.artifactId}-${project.version}</finalName>
-          <descriptors>
-            <descriptor>distribution.xml</descriptor>
-          </descriptors>
-        </configuration>
         <executions>
           <execution>
             <phase>deploy</phase>
@@ -73,9 +52,14 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <finalName>${project.artifactId}-${project.version}</finalName>
+          <descriptors>
+            <descriptor>distribution.xml</descriptor>
+          </descriptors>
+        </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.7</source>
@@ -84,43 +68,27 @@
       </plugin>
     </plugins>
   </build>
-
   <repositories>
     <repository>
       <id>sonatype-repo</id>
       <name>Sonatype Repository</name>
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
-    <!--other repositories if any-->
     <repository>
       <id>project.local</id>
       <name>project</name>
       <url>file:${project.basedir}/repo</url>
     </repository>
   </repositories>
-
-  <dependencies>
-    <dependency>
-      <groupId>net.md-5</groupId>
-      <artifactId>bungeecord-api</artifactId>
-      <version>1.8-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.ucchyocean</groupId>
-      <artifactId>BungeeJapanizeMessenger</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>9.3.5.v20151012</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>9.3.5.v20151012</version>
-    </dependency>
-  </dependencies>
-
-
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>
+

@@ -33,6 +33,9 @@ public class BJMConfig {
     private String broadcastChatFormat;
     private boolean broadcastChatLocalJapanize;
     private ArrayList<Pattern> ngwordCompiled;
+    private String webhookUrl;
+    private String token;
+    private int listen_port=8080;
 
     /**
      * コンストラクタ
@@ -94,6 +97,12 @@ public class BJMConfig {
             for ( String word : config.getStringList("ngword") ) {
                 ngwordCompiled.add(Pattern.compile(word));
             }
+
+            //Slack WebHook
+            webhookUrl = config.getString("webhook");
+            listen_port = config.getInt("listen-port");
+
+            token = config.getString("token");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,5 +184,17 @@ public class BJMConfig {
      */
     public ArrayList<Pattern> getNgwordCompiled() {
         return ngwordCompiled;
+    }
+
+    public String getWebhookUrl() {
+        return webhookUrl;
+    }
+
+    public int getListenPort(){
+        return listen_port;
+    }
+
+    public String getSlackToken(){
+        return token;
     }
 }

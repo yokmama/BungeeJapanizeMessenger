@@ -9,10 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.ucchyocean.slack.SlackPoster;
+import com.github.ucchyocean.slack.SlackReceiveServer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -39,6 +42,7 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
     private HashMap<String, String> history;
     private BJMConfig config;
     private JapanizeDictionary dictionary;
+    private SlackReceiveServer slackReceiveServer;
 
     /**
      * プラグインが有効化されたときに呼び出されるメソッド
@@ -73,8 +77,32 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
         // 辞書取得
         dictionary = new JapanizeDictionary(this);
 
+        if (config.getWebhookUrl() == null || config.getWebhookUrl().trim().isEmpty() || config.getWebhookUrl().equals("https://hooks.slack.com/services/")) {
+            getLogger().severe("You have not set your webhook URL in the config!");
+        }
+
+        //Slack to minecraft
+        if(slackReceiveServer!=null){
+            slackReceiveServer.stop();
+            slackReceiveServer = null;
+        }
+        getProxy().getScheduler().cancel(this);
+        slackReceiveServer = new SlackReceiveServer(this, config.getListenPort());
+        getProxy().getScheduler().runAsync(this, slackReceiveServer);
+
+
         // リスナー登録
         getProxy().getPluginManager().registerListener(this, this);
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        if(slackReceiveServer!=null) {
+            slackReceiveServer.stop();
+            slackReceiveServer = null;
+        }
+        getProxy().getScheduler().cancel(this);
     }
 
     /**
@@ -141,6 +169,7 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
         // NGワードのマスク
         message = maskNGWord(message, config.getNgwordCompiled());
 
+
         // Japanizeの付加
         if ( message.startsWith(config.getNoneJapanizeMarker()) ) {
 
@@ -163,6 +192,9 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
                 message = japanizeFormat.replace("%msg", preMessage).replace("%japanize", japanize);
             }
         }
+
+        //Slack
+        getProxy().getScheduler().runAsync(this, new SlackPoster(this, Utility.replaceColorCode(message), sender.getName(), "https://cravatar.eu/helmhead/" + getProxy().getPlayer(sender.getName()).getUniqueId() + "/128.png", false));
 
         // フォーマットの置き換え処理
         String result = config.getBroadcastChatFormat();
@@ -190,6 +222,8 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
                 sendMessage(player, result);
             }
         }
+
+
 
         // ローカルも置き換える処理なら、置換えを行う
         if ( config.isBroadcastChatLocalJapanize() ) {
@@ -246,5 +280,47 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
     protected void sendMessage(CommandSender reciever, String message) {
         if ( message == null ) return;
         reciever.sendMessage(TextComponent.fromLegacyText(message));
+    }
+
+    public String getWebhookUrl() {
+        return config.getWebhookUrl();
+    }
+
+    public String getSlackToken(){ return config.getSlackToken();}
+
+    public void onSlackMessage(String token, String channel_name, String user_name, String text) {
+        if(getProxy().getOnlineCount() == 0){
+            //誰もいない
+        }else {
+
+            if(text.startsWith(".")){
+                int p1 = text.indexOf(' ');
+                if(p1!=-1) p1 = text.indexOf(' ');
+                if(p1!=-1){
+                    String playerName = text.substring(1, p1);
+
+                    ProxiedPlayer player =  getProxy().getPlayer(playerName);
+                    if (player != null) {
+                        text = text.substring(p1+1);
+                        player.sendMessage(makeText(user_name,text));
+                        return;
+                    }
+
+                    //ユーザが見つからない
+                    return;
+                }
+            }
+            for ( String server : getProxy().getServers().keySet() ) {
+
+                ServerInfo info = getProxy().getServerInfo(server);
+                for ( ProxiedPlayer player : info.getPlayers() ) {
+                    sendMessage(player, makeText(user_name,text));
+                }
+            }
+        }
+    }
+
+    private String makeText(String user_name, String text){
+        return "§b" + user_name+"@slack: "+text;
     }
 }
