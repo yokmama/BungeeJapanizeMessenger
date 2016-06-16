@@ -11,9 +11,12 @@ https://github.com/ucchyocean/BungeeJapanizeMessenger
 
 # インストール
 
-PluginフォルダにできたBungeeJapanMessengerの下にconfig.ymlというファイルができています。
-そこに以下の設定があるはずです。
-これをそれぞれ変更してください。
+本家のBungeeJapanMessengerと同じように、pluginフォルダに出来上がったBungeeJapanMessenger.jarファイルを置いて
+一旦サーバーを起動してください。そのあと一旦終了します。
+すると、Pluginの下にBungeeJapanMessengerというフォルダが作成され、その下にconfig.ymlというファイルができています。
+
+そのファイルを開くと、以下の設定があるはずです。
+そえを、それぞれ変更してください。
 
 SlackのIncomoingWebHookのURLを設定
 
@@ -28,6 +31,7 @@ SlackのOutgoingWebHookのトークンを設定
 token: <Please set the outgoing token>
 
 SlackのOutgoing,Incomingの設定は割愛します。
+
 
 # 使い方
 
