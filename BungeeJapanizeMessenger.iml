@@ -10,17 +10,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: net.md-5:bungeecord-api:1.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.md-5:bungeecord-api:1.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.10-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: net.md-5:bungeecord-config:1.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.md-5:bungeecord-config:1.10-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.14" level="project" />
-    <orderEntry type="library" name="Maven: net.md-5:bungeecord-event:1.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: net.md-5:bungeecord-protocol:1.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.0.33.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.0.33.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.0.33.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.0.33.Final" level="project" />
+    <orderEntry type="library" name="Maven: net.md-5:bungeecord-event:1.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.md-5:bungeecord-protocol:1.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.5.Final" level="project" />
     <orderEntry type="library" name="Maven: net.sf.trove4j:trove4j:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.3.5.v20151012" level="project" />
@@ -28,7 +29,5 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.3.5.v20151012" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.3.5.v20151012" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.3.5.v20151012" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.3.5.v20151012" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:9.3.5.v20151012" level="project" />
   </component>
 </module>

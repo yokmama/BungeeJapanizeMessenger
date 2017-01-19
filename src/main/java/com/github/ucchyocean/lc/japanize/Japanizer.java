@@ -15,6 +15,25 @@ public class Japanizer {
 
     private static final String REGEX_URL = "https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+";
 
+    public static boolean is2Byte(String s) {
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            if ((c <= '\u007e') || // 英数字
+            (c == '\u00a5') || // \記号
+            (c == '\u203e') || // ~記号
+            (c >= '\uff61' && c <= '\uff9f') // 半角カナ
+        ) {
+                //System.out.print("半");
+            } else {
+                //全角
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * メッセージの日本語化をする
      * @param org
@@ -27,6 +46,9 @@ public class Japanizer {
 
         // 変換不要なら空文字列を返す
         if ( type == JapanizeType.NONE || !isNeedToJapanize(org) ) {
+            return "";
+        }else if(is2Byte(org)){
+            //2byte文字を含んでいるなら変換不要
             return "";
         }
 
@@ -52,8 +74,8 @@ public class Japanizer {
         // IME変換
         if ( type == JapanizeType.GOOGLE_IME ) {
             japanized = IMEConverter.convByGoogleIME(japanized);
-        } else if ( type == JapanizeType.SOCIAL_IME ) {
-            japanized = IMEConverter.convBySocialIME(japanized);
+//        } else if ( type == JapanizeType.SOCIAL_IME ) {
+//            japanized = IMEConverter.convBySocialIME(japanized);
         }
 
         // キーワードのアンロック

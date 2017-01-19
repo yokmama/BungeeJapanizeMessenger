@@ -5,6 +5,7 @@
  */
 package com.github.ucchyocean.bjm;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,7 +170,6 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
         // NGワードのマスク
         message = maskNGWord(message, config.getNgwordCompiled());
 
-
         // Japanizeの付加
         if ( message.startsWith(config.getNoneJapanizeMarker()) ) {
 
@@ -194,7 +194,18 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
         }
 
         //Slack
-        getProxy().getScheduler().runAsync(this, new SlackPoster(this, Utility.replaceColorCode(message), sender.getName(), "https://cravatar.eu/helmhead/" + getProxy().getPlayer(sender.getName()).getUniqueId() + "/128.png", false));
+        StringBuilder iconUrl = new StringBuilder();
+        iconUrl.append("https://cravatar.eu/helmhead/");
+        iconUrl.append(getProxy().getPlayer(sender.getName()).getUniqueId());
+        iconUrl.append("/128.png");
+        //UpdateFix Request
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        iconUrl.append("?").append(df.format(new Date()));
+
+        getProxy().getScheduler().runAsync(this,
+                new SlackPoster(this, Utility.replaceColorCode(message), sender.getName()
+                        , iconUrl.toString() //"https://cravatar.eu/helmhead/" + getProxy().getPlayer(sender.getName()).getUniqueId() + "/128.png"
+                        , false));
 
         // フォーマットの置き換え処理
         String result = config.getBroadcastChatFormat();
@@ -222,8 +233,6 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
                 sendMessage(player, result);
             }
         }
-
-
 
         // ローカルも置き換える処理なら、置換えを行う
         if ( config.isBroadcastChatLocalJapanize() ) {
@@ -282,6 +291,7 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
         reciever.sendMessage(TextComponent.fromLegacyText(message));
     }
 
+
     public String getWebhookUrl() {
         return config.getWebhookUrl();
     }
@@ -289,32 +299,63 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
     public String getSlackToken(){ return config.getSlackToken();}
 
     public void onSlackMessage(String token, String channel_name, String user_name, String text) {
+        //Command processing
+        if(text.startsWith("/")){
+            if(text.startsWith("/tell ")){
+                text = text.substring("/tell ".length());
+                int p1 = text.indexOf(' ');
+                if(p1!=-1){
+                    String playerName = text.substring(0, p1);
+                    text = text.substring(p1+1);
+                    ProxiedPlayer player =  getProxy().getPlayer(playerName);
+                    if (player != null) {
+                        player.sendMessage(makePrivateText(user_name,text));
+                    }else{
+                        //そのユーザはいませんっていうメッセージを返す
+                        StringBuilder msg = new StringBuilder();
+                        msg.append("The message was not sent.");
+
+                        getProxy().getScheduler().runAsync(this,
+                                new SlackPoster(this, Utility.replaceColorCode(msg.toString()), "Hakkun",
+                                        null, false));
+                    }
+                }
+            }else if(text.startsWith("/list")){
+                //There are 2 out of maxium 100 players online.
+                //Guest: hoge, hogehoge
+                StringBuilder msg = new StringBuilder();
+                if(getProxy().getOnlineCount() > 0) {
+                    msg.append("There are " + getProxy().getOnlineCount() + " out of maxium 100 players online.%0D%0A");
+                    int count = 0;
+                    for(Iterator ite=getProxy().getPlayers().iterator(); ite.hasNext(); ){
+                        ProxiedPlayer player = (ProxiedPlayer)ite.next();
+                        if(count>0){
+                            msg.append(", ");
+                        }
+                        msg.append(player.getDisplayName());
+                        count++;
+                    }
+                }else{
+                    msg.append("There are 0/100 players online:");
+                }
+
+                //Slack
+                getProxy().getScheduler().runAsync(this, new SlackPoster(this, Utility.replaceColorCode(msg.toString()), "Hakkun", null, false));
+            }
+
+            //コマンドの実行があってもなくても/のメッセージはユーザに投げない
+            return;
+        }
+
+        //chat message
         if(getProxy().getOnlineCount() == 0){
             //誰もいない
         }else {
-
-            if(text.startsWith(".")){
-                int p1 = text.indexOf(' ');
-                if(p1!=-1) p1 = text.indexOf(' ');
-                if(p1!=-1){
-                    String playerName = text.substring(1, p1);
-
-                    ProxiedPlayer player =  getProxy().getPlayer(playerName);
-                    if (player != null) {
-                        text = text.substring(p1+1);
-                        player.sendMessage(makeText(user_name,text));
-                        return;
-                    }
-
-                    //ユーザが見つからない
-                    return;
-                }
-            }
+            String sendMessage = makeText(user_name,text);
             for ( String server : getProxy().getServers().keySet() ) {
-
                 ServerInfo info = getProxy().getServerInfo(server);
                 for ( ProxiedPlayer player : info.getPlayers() ) {
-                    sendMessage(player, makeText(user_name,text));
+                    sendMessage(player, sendMessage);
                 }
             }
         }
@@ -322,5 +363,9 @@ public class BungeeJapanizeMessenger extends Plugin implements Listener {
 
     private String makeText(String user_name, String text){
         return "§b" + user_name+"@slack: "+text;
+    }
+
+    private String makePrivateText(String user_name, String text){
+        return "§3" + user_name+"@slack: "+text;
     }
 }

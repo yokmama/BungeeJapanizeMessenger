@@ -55,7 +55,9 @@ public class SlackPoster implements ScheduledTask, Runnable {
         JsonObject json = new JsonObject();
         json.addProperty("text", message);
         json.addProperty("username", name);
-        json.addProperty("icon_url", iconUrl);;
+        if(iconUrl!=null) {
+            json.addProperty("icon_url", iconUrl);
+        }
         json.addProperty("mrkdwn", useMarkdown);
 
         try {
