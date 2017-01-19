@@ -101,6 +101,7 @@ broadcastChat: true
 # %msg            : 発言内容（Japanize変換された場合は、Japanize結果を含みます。）
 broadcastChatFormat: '%date %time &d<%sender@%senderserver> &f%msg'
 
+<<<<<<< HEAD
 # broadcastChat が true のときに、
 # 発言者のサーバーについても、Japanize変換を行うかどうか。
 # 各サーバーごとで、LunaChatなどのJapanize変換を行うプラグインを使用したい場合は、
@@ -123,3 +124,20 @@ ngword:
 
 ※ ダウンロード：<br/>
 https://github.com/ucchyocean/BungeeJapanizeMessenger/blob/master/release/BungeeJapanizeMessenger-1.2.0-dist.zip?raw=true
+=======
+Slackでの会話はキーワードを設定しているのであれば　
+キーワード: メッセージ
+で会話ができます。
+
+例
+mc: こんにちは
+
+それから、プレイヤーに対してメッセージを投げる場合は
+
+mc:/tell yokmama こんにちは
+
+と/tellコマンドを使うことができます。
+
+listコマンドは
+mc:/list とコマンドを使うことができます
+>>>>>>> 86fb1b590bf76a3c5367ca5b7fceb8791f08bd0b
